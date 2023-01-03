@@ -1,16 +1,19 @@
 package com.example.project
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ViewModel.CountryViewModel
 import com.example.adapter.CountryAdapter
+import com.example.data.Countries
 
 /**
  * A simple [Fragment] subclass.
@@ -22,10 +25,8 @@ import com.example.adapter.CountryAdapter
 private lateinit var countryAdapter: CountryAdapter
 private lateinit var recycleView_country: RecyclerView
 
-class DataFragment : Fragment() {
-    private var layoutManager: RecyclerView.LayoutManager? = null
-    private var countryAdpater: RecyclerView.Adapter<CountryAdapter.CountryItemView>? = null
-
+class DataFragment : Fragment() ,CountryAdapter.CountryItemClickListner{
+    private var countrylist: List<Countries>? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -47,6 +48,7 @@ class DataFragment : Fragment() {
         sharedViewModel.getLiveDataObserver().observe(viewLifecycleOwner, Observer {
                 if(it!=null){
                     countryAdapter.setCountryList(it)
+                    countrylist=it
                     countryAdapter.notifyDataSetChanged()
                 }
         })
@@ -55,16 +57,14 @@ class DataFragment : Fragment() {
 
     private fun initateRecycleView(view: View) {
         recycleView_country = view.findViewById(R.id.recycleView_country)
-        countryAdapter = CountryAdapter(this)
+        countryAdapter = CountryAdapter(this,this)
         recycleView_country.adapter= countryAdapter
         val my_layoutManager = LinearLayoutManager(context)
         recycleView_country.layoutManager=my_layoutManager
-//
-//        recycleView_country = view.findViewById(R.id.recycleView_country)
-//        recycleView_country.layoutManager = my_layoutManager
-//        recycleView_country.setHasFixedSize(true)
-//        countryAdapter = CountryAdapter(this)
-//        recycleView_country.adapter=countryAdpater
+    }
 
+    override fun myCountryItemClick(poisiotn: Int) {
+      var countries =  countrylist?.get(poisiotn)
+        Log.d("Mandira", "myCountryItemClick: ${countries?.capital.toString()}")
     }
 }
