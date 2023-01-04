@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ViewModel.CountryViewModel
@@ -65,6 +66,12 @@ class DataFragment : Fragment() ,CountryAdapter.CountryItemClickListner{
 
     override fun myCountryItemClick(poisiotn: Int) {
       var countries =  countrylist?.get(poisiotn)
-        Log.d("Mandira", "myCountryItemClick: ${countries?.capital.toString()}")
+        countries?.let { navigateToDetailFragment(it) }
     }
+
+    fun navigateToDetailFragment(countries: Countries){
+        val dataFragmentDirections=DataFragmentDirections.actionDataFragmentToDataDetailsFragment(countries)
+        findNavController().navigate(dataFragmentDirections)
+    }
+
 }

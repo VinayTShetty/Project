@@ -21,5 +21,8 @@
         <action
             android:id="@+id/action_dataDetailsFragment_to_dataFragment"
             app:destination="@id/dataFragment" />
+        <argument
+            android:name="countries_data"
+            app:argType="com.example.data.Countries" />
     </fragment>
 </navigation>
